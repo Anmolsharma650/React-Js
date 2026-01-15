@@ -4,7 +4,7 @@ function App() {
 
 
   return (
-  <h1>anmol sharma</h1>
+  <h1 className="anmol">Chai Aur Code || Anmol Sharma || Learning React-Js</h1>
   )
 }
 
