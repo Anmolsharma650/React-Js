@@ -1,10 +1,10 @@
 
 
 function App() {
-
+const username ="Kamal Pandey"
 
   return (
-  <h1 className="anmol">Chai Aur Code || Anmol Sharma || Learning React-Js</h1>
+  <h1 style={{color: "white"}} className="anmol">Chai Aur Code || Anmol Sharma || Learning React-Js || {username}</h1>
   )
 }
 
