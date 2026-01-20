@@ -1,6 +1,8 @@
 import React from 'react'
 
-function Card() {
+function Card(userName,paragraph) {
+  console.log(userName,paragraph);
+  
   return (
      <div className="card flex justify-center  mt-2 -900">
         <div className="md:max-w-sm w-full p-6 rounded-xl shadow-xl bg-black border border-zinc-800 hover:border-white transition-all duration-300 hover:transform hover:scale-105 group">
@@ -20,13 +22,12 @@ function Card() {
           Featured
         </span>
         <h2 className="text-xl font-bold text-white mb-2 group-hover:text-gray-300 transition-colors duration-200">
-          Modern Design Solutions
+          {userName.userName}'s Tailwind Designs
         </h2>
       </div>
 
       <p className="text-gray-400 text-sm leading-relaxed mb-6">
-        Discover cutting-edge design patterns and UI components that elevate
-        your digital experiences.
+        {userName.paragraph || "Explore a collection of stunning designs crafted with Tailwind CSS. From sleek landing pages to vibrant dashboards, discover inspiration for your next project."}
       </p>
 
       <div className="flex items-center justify-between">
