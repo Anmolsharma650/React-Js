@@ -1,49 +1,98 @@
-import { useState,useCallback } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-
+import { useState, useCallback, useEffect } from "react";
 
 function App() {
-  const [length, setLength] = useState(8)
+  const [length, setLength] = useState(4);
   const [numbers, setNumbers] = useState(false);
   const [chr, setChr] = useState(false);
-  const [Password, setPassword] = useState("");
+  const [password, setPassword] = useState("");
+
   const passwordGenerate = useCallback(() => {
-    let password = "";
+    let pass = "";
     let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    if (numbers) {
-      str += "0123456789";
-    }
-    if (chr) {
-      str += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-    } for (let i = 0; i < length; i++) {
-      let randomIndex = Math.floor(Math.random() * chars.length + 1);
-      password += chars[randomIndex];
-    }
-    setPassword(password);
-  }, [length, numbers, chr, Password]);
 
+    if (numbers) chars += "0123456789";
+    if (chr) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
 
-  return ( 
-    <div className='flex justify-center flex-wrap mt-10'>
-      <div className="box bg-gray-500 h-30 w-120 rounded-3xl m-20">
-        <div className='button flex justify-center overflow-hidden rounded-lg pt-5'>
-          <button className='bg-white h-10 w-90 px-4 py-2 rounded-l-lg'>Generate Password</button>
-          <button className='bg-blue-500 h-10 w-20 px-4 py-2 rounded-r-lg'>Copy</button>
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      pass += chars[randomIndex];
+    }
+    setPassword(pass);
+  }, [length, numbers, chr, setPassword]);
+
+  useEffect(() => {
+    passwordGenerate();
+  }, [length, numbers, chr, passwordGenerate]);
+
+  return (
+    <div className="flex justify-center mt-16 px-4">
+      <div className="bg-gray-600 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-xl">
+
+        <h1 className="text-2xl font-bold text-center text-white">
+          PASSWORD GENERATOR
+        </h1>
+
+        {/* Password Display */}
+        <div className="flex rounded-lg bg-white overflow-hidden">
+          <input
+            type="text"
+            value={password}
+            readOnly
+            className="flex-1 px-3 py-2 text-black outline-none"
+          />
+          <button
+            className="bg-purple-900 text-white px-5 font-medium "
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(password);
+                alert("Password copied!");
+              } catch (err) {
+                alert("Copy failed");
+              }
+            }}
+          >
+            Copy
+          </button>
+
         </div>
-        <div className="w-64 flex items-center ">
-      <input
-        type="range"
-        min="0"
-        max="50"
-        className="w-50 h-2 ml-5 mt-4 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
-      /> length 
 
+        {/* Controls */}
+        <div className="flex items-center gap-4 text-white text-sm">
+          <input
+            type="range"
+            min="4"
+            max="10"
+            value={length}
+            className="flex-1 accent-purple-900"
+            onChange={(e) => setLength(Number(e.target.value))}
+          />
+
+          <span>Length ({length})</span>
+
+          <label className="flex items-center gap-1">
+            <input
+              type="checkbox"
+              checked={numbers}
+              onChange={() => setNumbers(!numbers)}
+            />
+            Numbers
+          </label>
+
+          <label className="flex items-center gap-1">
+            <input
+              type="checkbox"
+              checked={chr}
+              onChange={() => setChr(!chr)}
+            />
+            Chars
+          </label>
+        </div>
+        <div className="mt-4 flex justify-center">
+          <button className="bg-purple-900 text-white  px-4 py-2 font-medium rounded-2xl" onClick={passwordGenerate}>Reload</button>
+        </div>
+      </div>
     </div>
-      </div>
-      </div>
-   
-  )
+  );
 }
 
-export default App
+export default App;
