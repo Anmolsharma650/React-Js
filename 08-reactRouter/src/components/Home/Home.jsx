@@ -40,7 +40,7 @@ export default function Home() {
                 <img className="sm:w-96 w-48 rounded-2xl" src="https://images.freeimages.com/image/previews/a1a/study-kit-flat-png-design-5690859.png " alt="image2" />
             </div>
 
-            <h1 className="text-center text-2xl sm:text-5xl py-10 font-medium">For Better Future</h1>
+            <h1 className="text-center text-2xl sm:text-5xl py-2 font-medium">For Better Future</h1>
         </div>
     );
 }
