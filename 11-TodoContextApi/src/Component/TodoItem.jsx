@@ -1,53 +1,73 @@
-import React, { useState } from 'react'
-import { useTodo } from '../Context/TodoContext';
+import { useState } from 'react'
+import { useTodo } from '../Context/TodoContext'
 
 function TodoItem({ todo }) {
-    const {updateTodo,deleteTodo,toggelComplete } = useTodo
+  const [isEdit, setIsEdit] = useState(false)
+  const [msg, setMsg] = useState(todo.todo)
+  const { updateTodo, deleteTodo, toggleComplete } = useTodo()
 
-    return (
-        <div
-            className={`flex border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300  text-black ${
-                todo.completed ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
-            }`}
-        >
-            <input
-                type="checkbox"
-                className="cursor-pointer"
-                checked={todo.completed}
-                onChange={toggleCompleted}
-            />
-            <input
-                type="text"
-                className={`border outline-none w-full bg-transparent rounded-lg ${
-                    isTodoEditable ? "border-black/10 px-2" : "border-transparent"
-                } ${todo.completed ? "line-through" : ""}`}
-                value={todoMsg}
-                onChange={(e) => setTodoMsg(e.target.value)}
-                readOnly={!isTodoEditable}
-            />
-            {/* Edit, Save Button */}
-            <button
-                className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0 disabled:opacity-50"
-                onClick={() => {
-                    if (todo.completed) return;
+  return (
+    <div
+      className={`
+        w-full md:w-1/2 max-w-xl mx-auto
+        flex items-center gap-3 mt-5 p-3 rounded-xl
+        shadow-md transition-all duration-300
+        ${todo.completed ? 'bg-green-100' : 'bg-white'}
+      `}
+    >
+      {/* Checkbox */}
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => toggleComplete(todo.id)}
+        className="w-5 h-5 accent-green-500 cursor-pointer"
+      />
 
-                    if (isTodoEditable) {
-                        editTodo();
-                    } else setIsTodoEditable((prev) => !prev);
-                }}
-                disabled={todo.completed}
-            >
-                {isTodoEditable ? "📁" : "✏️"}
-            </button>
-            {/* Delete Todo Button */}
-            <button
-                className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0"
-                onClick={() => deleteTodo(todo.id)}
-            >
-                ❌
-            </button>
-        </div>
-    );
+      {/* Todo Text */}
+      <input
+        value={msg}
+        readOnly={!isEdit}
+        onChange={(e) => setMsg(e.target.value)}
+        className={`
+          flex-1 bg-transparent px-2 py-1 rounded-md
+          outline-none transition
+          ${todo.completed ? 'line-through text-gray-400' : 'text-gray-800'}
+          ${isEdit ? 'border border-gray-300 bg-white' : 'border border-transparent'}
+        `}
+      />
+
+      {/* Edit / Save Button */}
+      <button
+        onClick={() => {
+          if (isEdit) updateTodo(todo.id, { todo: msg })
+          setIsEdit(!isEdit)
+        }}
+        disabled={todo.completed}
+        className="
+          w-9 h-9 flex items-center justify-center
+          rounded-lg border border-gray-200
+          bg-gray-50 hover:bg-gray-100
+          disabled:opacity-50
+          transition
+        "
+      >
+        {isEdit ? '💾' : '✏️'}
+      </button>
+
+      {/* Delete Button */}
+      <button
+        onClick={() => deleteTodo(todo.id)}
+        className="
+          w-9 h-9 flex items-center justify-center
+          rounded-lg border border-red-200
+          bg-red-50 hover:bg-red-100
+          transition
+        "
+      >
+        ❌
+      </button>
+    </div>
+  )
 }
 
-export default TodoItem;
+export default TodoItem

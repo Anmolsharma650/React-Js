@@ -1,33 +1,60 @@
-import React from 'react'
-import { useTodo } from '../Context/TodoContext';
+import { useState } from 'react'
+import { useTodo } from '../Context/TodoContext'
 
 function TodoForm() {
-    const[todos, settodos]=useState('')
-    const {addTodo}= useTodo()
-    const add =(e)=>{
-        e.preventDefault()
+  const [text, setText] = useState('')
+  const { addTodo } = useTodo()
 
-        if(!todos)return
+  const add = (e) => {
+    e.preventDefault()
+    if (!text) return
+    addTodo({ todo: text, completed: false })
+    setText('')
+  }
 
-        addTodo({todos ,completed : false})
-        settodos('')
-    }
+  return (
+    <>
+    <div>
+        <h1 className='text-4xl text-white text-center mb-9'>Manage Your Tools</h1>
+    </div>
+    <div className=" flex items-center justify-center">
+  <form
+    onSubmit={add}
+    className="w-1/2 flex items-center gap-3
+               bg-gray-700 backdrop-blur-md
+               p-3 rounded-xl shadow-lg"
+  >
+    <input
+      type="text"
+      placeholder="Write your todo..."
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      className="
+        flex-1 px-4 py-2 rounded-lg
+        bg-white text-black placeholder-white/70
+        border border-white/20
+        focus:outline-none focus:ring-2 focus:ring-white
+        transition duration-200
+      "
+    />
 
-    return (
-        <form  onSubmit={add} className="flex">
-            <input
-                type="text"
-                placeholder="Write Todo..."
-                className="w-full border border-black/10 rounded-l-lg px-3 outline-none duration-150 bg-white/20 py-1.5"
-                value={todos}
-                onChange={(e) => settodos(e.target.value)}
-            />
-            <button type="submit" className="rounded-r-lg px-3 py-1 bg-green-600 text-white shrink-0">
-                Add
-            </button>
-        </form>
-    );
+    <button
+      type="submit"
+      className="
+        px-5 py-2 rounded-lg font-medium
+        bg-gradient-to-r from-green-400 to-green-600
+        hover:from-green-500 hover:to-green-700
+        active:scale-95
+        transition-all duration-200
+        shadow-md shadow-green-500/30
+      "
+    >
+      Add
+    </button>
+  </form>
+</div>
+</>
+  )
 }
 
-export default TodoForm;
-
+export default TodoForm
