@@ -4,7 +4,10 @@ import TodoForm from './Component/TodoForm'
 import TodoItem from './Component/TodoItem'
 
 function App() {
-  const [todos, setTodos] = useState([])
+  // ✅ Load todos from localStorage BEFORE first render
+  const [todos, setTodos] = useState(() => {
+    return JSON.parse(localStorage.getItem('todos') || '[]')
+  })
 
   const addTodo = (todo) =>
     setTodos(prev => [{ id: Date.now(), ...todo }, ...prev])
@@ -24,16 +27,15 @@ function App() {
       )
     )
 
-  useEffect(() => {
-    setTodos(JSON.parse(localStorage.getItem('todos') || '[]'))
-  }, [])
-
+  // ✅ Save todos to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos))
   }, [todos])
 
   return (
-    <TodoProvider value={{ todos, addTodo, updateTodo, deleteTodo, toggleComplete }}>
+    <TodoProvider
+      value={{ todos, addTodo, updateTodo, deleteTodo, toggleComplete }}
+    >
       <div className="p-5">
         <TodoForm />
         {todos.map(todo => (
